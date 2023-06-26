@@ -1,2 +1,2 @@
 # Julia-Soilspec
-lorem ipsum dolar
+A Julia version of the R soilspec package.
