@@ -2758,7 +2758,6 @@ function spectra2colour(spectra)
 
   ######
   # Internal functions.
-
   function get_closest_munsell(input_luv)
 
     strMunsell = ""
@@ -2775,33 +2774,25 @@ function spectra2colour(spectra)
     return(strMunsell)
 
   end
-
   # End of internal functions.
   ######
 
 
   # Trim non-visible wavelengths (using nanometres).
-  blu_spectra = spectra[:, Between(:"450", :"520")]   # blue portion
-  grn_spectra = spectra[:, Between(:"520", :"600")]   # green portion
-  red_spectra = spectra[:, Between(:"600", :"690")]   # red portion
-  
+  blu_spectra = spectra[!, Between(:"450", :"520")]   # blue portion
+  grn_spectra = spectra[!, Between(:"520", :"600")]   # green portion
+  red_spectra = spectra[!, Between(:"600", :"690")]   # red portion
+
   # Calculate RGB means.
-  blu_spectra.rowmean .= reduce(+, eachcol(blu_spectra)) ./ ncol(blu_spectra)
-  blu_spectra = blu_spectra[:, [:rowmean]]
-  grn_spectra.rowmean .= reduce(+, eachcol(grn_spectra)) ./ ncol(grn_spectra)
-  grn_spectra = grn_spectra[:, [:rowmean]]
-  red_spectra.rowmean .= reduce(+, eachcol(red_spectra)) ./ ncol(red_spectra)
-  red_spectra = red_spectra[:, [:rowmean]]
+  spectra.blue .= reduce(+, eachcol(blu_spectra)) ./ ncol(blu_spectra)
+  blu_spectra = nothing
+  spectra.green .= reduce(+, eachcol(grn_spectra)) ./ ncol(grn_spectra)
+  grn_spectra = nothing
+  spectra.red .= reduce(+, eachcol(red_spectra)) ./ ncol(red_spectra)
+  red_spectra = nothing
   #
-  spectra.blue = blu_spectra.rowmean
-  spectra.green = grn_spectra.rowmean
-  spectra.red = red_spectra.rowmean
   spectra.colour = repeat([hex(RGB(0.0, 0.0, 0.0))], nrow(spectra))
   spectra.munsell = repeat([""], nrow(spectra))
-  #
-  blu_spectra = nothing
-  grn_spectra = nothing
-  red_spectra = nothing
 
   # Calculate Luv colours.
   # Using @eachrow from DataFramesMeta is faster than a simple row iterator.
