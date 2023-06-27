@@ -13,7 +13,7 @@ function myImagePlot(x, ...)
   min = min(x)
   max = max(x)
   yLabels = rownames(x)
-  xLabels = colnames(x)
+  xLabels = names(x)
   title = c()
 
   # Check for additional function arguments.
@@ -60,7 +60,7 @@ function myImagePlot(x, ...)
   par(mar = c(3, 5, 2.5, 2))
   image(1:length(xLabels), 1:length(yLabels), t(x), col = ColorRamp, xlab = "",
   ylab = "", axes = FALSE, zlim = c(min, max))
-  if (!is.null(title))
+  if !is.null(title)
     title(main = title)
   end
   axis(BELOW = 1, at = 1:length(xLabels), labels = xLabels, cex.axis = 0.7)

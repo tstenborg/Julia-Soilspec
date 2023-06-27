@@ -51,7 +51,7 @@
 #    Demattê, J. A., Scholten, T. (2014), Sampling optimal calibration sets in
 #    soil infrared spectroscopy. Geoderma, 226, 140-150.
 
-function css(S, k, method = "kms", repetitions = 10, n = 512, from, to, bw, ...)
+function css(S, k, method = "kms", repetitions = 10, n = 512, from, to, bws, ...)
 
   requireNamespace("clhs")
   requireNamespace("matrixStats")
