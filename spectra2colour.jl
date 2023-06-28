@@ -4,12 +4,33 @@
 #              reflectance spectra.
 #
 # Parameters:
-#   spectra  A dataframe containing reflectance vs wavelength data.
-#            It's assumed:
-#            a) each row holds data for one spectrum.
-#            b) each column holds data for a unique wavelength,
-#            c) column names specify a wavelength,
-#            d) data values are in the range [0,1].
+#   spectra    A dataframe containing reflectance vs wavelength data.
+#              It's assumed:
+#              * each row holds data for one spectrum.
+#              * each column holds data for a unique wavelength,
+#              * column names specify a wavelength,
+#              * data values are in the range [0,1].
+#
+# Notes:       This function is a Julia adaptation of the spectra2colour
+#               function from the soilspec R package:
+#               https://github.com/AlexandreWadoux/soilspec
+#
+#              The original R code is discussed in more detail in the
+#               textbook:
+#               Wadoux, A. M. J. C., et al. "Soil Spectral Inference with R",
+#               Berlin/Heidelberg, Germany: Springer, 2021.
+#              
+#              The Munsell/Luv dictionary is a translation between colour
+#               spaces of the Munsell/RGB conversion tables by Timo Teichert,
+#               available at (accessed 28-Jun-2023):
+#               https://www.munsellcolourscienceforpainters.com/
+#                 MunsellResources/Munsell-to-RGB-Tables.xlsm
+#
+#              Those tables were based on Centore, P., 2013, "Conversions
+#               Between the Munsell and sRGB Colour Systems", available at
+#               (accessed 28-Jun-2023):
+#               Ref: https://www.munsellcolourscienceforpainters.com/
+#                      ConversionsBetweenMunsellAndsRGBsystems.pdf
 
 using Colors
 using CSV
