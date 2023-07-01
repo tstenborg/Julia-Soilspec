@@ -16,7 +16,7 @@
 #
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function chBLCext(spectra, type = c("R", "A"), wav, ...)
+function chBLCext(spectra, type = ["R", "A"], wav, ...)
 
   # If absorbance, take the inverse to find the convex hull points.
   if type == "A"
@@ -24,8 +24,8 @@ function chBLCext(spectra, type = c("R", "A"), wav, ...)
   end
 
   function cHullFun(x, wav)
-    cHull = sort(chull(c(wav[1] - 1, wav, wav[length(wav)] + 1), c(0, x, 0)))
-    cHull = cHull[-c(1, length(cHull))] - 1
+    cHull = sort(chull([wav[1] - 1, wav, wav[length(wav)] + 1], [0, x, 0]))
+    cHull = cHull[-[1, length(cHull)]] - 1
     return(approx(x = wav[cHull], y = x[cHull], xout = wav,
       method = "linear")$y)
   end

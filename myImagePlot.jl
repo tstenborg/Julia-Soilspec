@@ -1,49 +1,43 @@
 # Title:       myImagePlot
 #
-# Description: Plot the projection matrix in EPO.
+# Description: Plot a projection matrix for external parameter othogonalisation
+#              (EPO).
 #
-# Parameters:  The projection matrix.
+# Parameters:
+#   x          The projection matrix.
+#   zlim       A two-element array holding the minimum (element one) and maximum
+#                (element two) values in x that should be plotted.
+#   title      Title for the plot. Optional.
+#   xLabels    Labels for the plot's x-axis. Optional.
+#   yLabels    Labels for the plot's y-axis. Optional.
 #
 # Returns:     Image of the projection matrix.
 
 # A function for plotting a matrix.
 
-function myImagePlot(x, ...)
+function myImagePlot(x, zlim = nothing, title = nothing, xLabels = nothing,
+                     yLabels = nothing)
 
-  min = min(x)
-  max = max(x)
-  yLabels = rownames(x)
-  xLabels = names(x)
-  title = c()
-
-  # Check for additional function arguments.
-  if length(list(...))
-    Lst = list(...)
-    if !is.null(Lst$zlim)
-      min = Lst$zlim[1]
-      max = Lst$zlim[2]
-    end
-    if !is.null(Lst$yLabels)
-      yLabels = c(Lst$yLabels)
-    end
-    if !is.null(Lst$xLabels)
-      xLabels = c(Lst$xLabels)
-    end
-    if !is.null(Lst$title)
-      title = Lst$title
-    end
+  # Bound values to be plotted.
+  if isnothing(zlim)
+    min = min(x)
+    max = max(x)
+  else
+    min = zlim[1]
+    max = zlim[2]
   end
 
-  # Check for null values.
-  if is.null(xLabels)
-    xLabels = c(1:ncol(x))
+  # Allow for plot labels not passed in.
+  if isnothing(xLabels)
+    xLabels = [1:size(x, 2)]   # Number of columns.
   end
-  if is.null(yLabels)
-    yLabels = c(1:nrow(x))
+  if isnothing(yLabels)
+    yLabels = [1:size(x, 1)]   # Number of rows.
   end
 
-  layout(matrix(data = c(1, 2), nrow = 1, ncol = 2), widths = c(4, 1),
-         heights = c(1, 1))
+  layout(matrix(data = [1, 2], nrow = 1, ncol = 2),
+         widths = [4, 1],
+         heights = [1, 1])
 
   # Red and green range from 0 to 1 while blue ranges from 1 to 0.
   ColorRamp = rgb(seq(0, 1, length = 256),  # Red.
@@ -57,9 +51,9 @@ function myImagePlot(x, ...)
   x = x[reverse,]
 
   # Data Map.
-  par(mar = c(3, 5, 2.5, 2))
+  par(mar = [3, 5, 2.5, 2])
   image(1:length(xLabels), 1:length(yLabels), t(x), col = ColorRamp, xlab = "",
-  ylab = "", axes = FALSE, zlim = c(min, max))
+    ylab = "", axes = FALSE, zlim = [min, max])
   if !is.null(title)
     title(main = title)
   end
