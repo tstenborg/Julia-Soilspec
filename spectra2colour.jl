@@ -8,7 +8,8 @@
 #              It's assumed:
 #              * each row holds data for one spectrum.
 #              * each column holds data for a unique wavelength,
-#              * column names specify a wavelength,
+#              * column names are a wavelength prefixed with an underscore,
+#                  (i.e. "_550", "_551", "_552", etc.)
 #              * data values are in the range [0,1].
 #
 # Notes:       This function is a Julia adaptation of the spectra2colour
@@ -2800,9 +2801,9 @@ function spectra2colour(spectra)
 
 
   # Trim non-visible wavelengths (using nanometres).
-  blu_spectra = spectra[!, Between(:"450", :"520")]   # blue portion
-  grn_spectra = spectra[!, Between(:"520", :"600")]   # green portion
-  red_spectra = spectra[!, Between(:"600", :"690")]   # red portion
+  blu_spectra = spectra[!, Between(:"_450", :"_520")]   # blue portion
+  grn_spectra = spectra[!, Between(:"_520", :"_600")]   # green portion
+  red_spectra = spectra[!, Between(:"_600", :"_690")]   # red portion
 
   # Calculate RGB means.
   spectra.blue .= reduce(+, eachcol(blu_spectra)) ./ ncol(blu_spectra)
@@ -2812,6 +2813,7 @@ function spectra2colour(spectra)
   spectra.red .= reduce(+, eachcol(red_spectra)) ./ ncol(red_spectra)
   red_spectra = nothing
   #
+  # Initialise columns to store colours in RGB and Munsell format.
   spectra.colour = repeat([hex(RGB(0.0, 0.0, 0.0))], nrow(spectra))
   spectra.munsell = repeat([""], nrow(spectra))
 
