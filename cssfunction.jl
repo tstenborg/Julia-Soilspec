@@ -97,7 +97,7 @@ function css(S, k, method = "kms", repetitions = 10, n = 512, from, to, bws, ...
   # Estimate the density distribution of each variable.
   names(d_bandwidths) = colnames(S)
   for i in 1:length(min_sc)
-    idsty = density(S[,i],
+    idsty = density(S[:,i],
                     bw = "nrd0",
                     n = n, from = min_sc[i], to = max_sc[i],
                     kernel = "gaussian")
@@ -121,7 +121,7 @@ function css(S, k, method = "kms", repetitions = 10, n = 512, from, to, bws, ...
   end
 
   for i in 1:repetitions
-    results_ss[, -1] = NA
+    results_ss[:, -1] = NA
     fn = paste(method, "_temp_results_rep", i,".txt", sep = "")
 
     for j in 1:length(k)
@@ -206,7 +206,7 @@ function css(S, k, method = "kms", repetitions = 10, n = 512, from, to, bws, ...
       end
     end
     if repetitions > 2
-      final_ss = data.frame(final_ss, msd_sd = final_ss_sd[, 2])
+      final_ss = data.frame(final_ss, msd_sd = final_ss_sd[:, 2])
     end
     write.table(final_ss, file = paste(method, "_final_results_.txt", sep = ""),
                 sep = "\t", row.names = FALSE)
